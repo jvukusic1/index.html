@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="sl">
 <head>
@@ -96,10 +97,11 @@ body{font-family:'Outfit',sans-serif;background:#050d1f;min-height:100vh;display
       <div class="chips" id="mainChips">
         <button class="chip" onclick="userSay('Odpiralni čas')">🕐 Odpiralni čas</button>
         <button class="chip" onclick="userSay('Cene vstopnic')">🎟️ Cene vstopnic</button>
-        <button class="chip" onclick="userSay('Kako do nas')">📍 Kako do nas</button>
-        <button class="chip" onclick="userSay('Delavnice')">🔬 Delavnice</button>
-        <button class="chip" onclick="userSay('Skupine in šole')">🏫 Skupine in šole</button>
         <button class="chip" onclick="userSay('Rojstni dnevi')">🎂 Rojstni dnevi</button>
+        <button class="chip" onclick="userSay('Najem prostora')">🏢 Najem prostora</button>
+        <button class="chip" onclick="userSay('Šolski program')">🏫 Šolski program</button>
+        <button class="chip" onclick="userSay('Delavnice')">🔬 Delavnice</button>
+        <button class="chip" onclick="userSay('Kako do nas')">📍 Kako do nas</button>
       </div>
     </div>
 
@@ -117,79 +119,145 @@ body{font-family:'Outfit',sans-serif;background:#050d1f;min-height:100vh;display
 <script>
 const sb = document.getElementById('stars');
 for(let i=0;i<120;i++){
-  const s=document.createElement('div');
-  s.className='star';
+  const s=document.createElement('div');s.className='star';
   const sz=Math.random()*2.5+0.5;
   s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;--mn:${0.1+Math.random()*0.15};--mx:${0.6+Math.random()*0.4}`;
   sb.appendChild(s);
 }
 
-const R={
-  'odpiralni čas':{text:'Naš odpiralni čas:\n\n🟢 Sreda – Nedelja: 10:00 – 17:00\n🔴 Ponedeljek in Torek: zaprto\n\n📌 Zadnji vstop je ob 16:00.\n\n🏫 Za šolske skupine: Tor – Ned, 9:00 – 17:00',chips:['Cene vstopnic','Kako do nas','Skupine in šole']},
-  'cene vstopnic':{text:'Cene vstopnic:\n\n👤 Odrasli: 11 €\n👶 Otroci / dijaki / študenti: 8 €\n👨‍👩‍👧‍👦 Družinska: 28 €\n(2 odrasla + do 4 otroci do 15 let)\n\n✅ Vključene brezplačne delavnice.\n🎟️ shop.tehnopark.si',chips:['Odpiralni čas','Skupine in šole','Rojstni dnevi']},
-  'kako do nas':{text:'Najdete nas na:\n\n📍 Gubčeva ulica 1, 3000 Celje\n\n🚗 Parking:\n• Parkirna hiša Celeia Park\n• Parkirišče Vrunčeva ulica\n• Parkirišče Železniška postaja\n\n🚆 Vlak: postaja Celje (10 min hoje)\n📞 +386 (03) 828 20 93',chips:['Odpiralni čas','Cene vstopnic','Kontakt']},
-  'delavnice':{text:'Naše delavnice:\n\n🔬 Naravoslovno-tehnične delavnice\n🍳 Kulinarika (Cele kuha)\n🎨 Ustvarjalne delavnice za otroke\n🚀 Astronomija in fizika\n\nV sklopu ogleda brezplačno!\n\n📧 infotehnopark@celje.si\n🌐 tehnopark.si/delavnice',chips:['Cene vstopnic','Skupine in šole','Rojstni dnevi']},
-  'skupine in šole':{text:'Za organizirane skupine (15+ oseb):\n\n🏫 Šolske skupine:\n• Rezervacija: tor–pet, 8:00–10:00 in 13:00–14:00\n• Email: tehnopark@celje.si\n\n👥 Večje skupine:\n• infotehnopark@celje.si\n\n⚠️ Rezervacija je obvezna!',chips:['Odpiralni čas','Delavnice','Kontakt']},
-  'rojstni dnevi':{text:'🎂 Praznujte rojstni dan v Tehnoparku!\n\n• Otroški rojstnodnevni paketi\n• Skupinski obisk z delavnico\n• Prilagojeni programi\n\n📧 infotehnopark@celje.si\n📞 +386 (03) 828 20 93\n🌐 tehnopark.si/rojstni-dnevi',chips:['Cene vstopnic','Delavnice','Kontakt']},
-  'kontakt':{text:'Kontaktni podatki:\n\n📞 +386 (03) 828 20 93\n📧 infotehnopark@celje.si\n📧 Rezervacije: tehnopark@celje.si\n🌐 tehnopark.si\n📍 Gubčeva ulica 1, 3000 Celje\n\n💬 @tehnoparkcelje',chips:['Odpiralni čas','Kako do nas','Cene vstopnic']}
+function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+const R = {
+  'odpiralni čas': {
+    text:'Naš odpiralni čas:\n\n🟢 Sreda – Nedelja: 10:00 – 17:00\n🔴 Ponedeljek in Torek: zaprto\n\n📌 Zadnji vstop je ob 16:00.\n\n🏫 Za šolske skupine: Tor – Ned, 9:00 – 17:00',
+    chips:['Cene vstopnic','Kako do nas','Šolski program']
+  },
+  'cene vstopnic': {
+    text:'Cene vstopnic:\n\n👤 Odrasli: 11 €\n👶 Otroci / dijaki / študenti: 8 €\n👨‍👩‍👧‍👦 Družinska: 28 €\n(2 odrasla + do 4 otroci do 15 let)\n\n✅ V ceni so vključene brezplačne delavnice v sklopu ogleda.\n🎟️ Nakup: shop.tehnopark.si',
+    chips:['Odpiralni čas','Rojstni dnevi','Šolski program']
+  },
+  'rojstni dnevi': {
+    text:'🎂 Nepozaben rojstni dan v Tehnoparku!\n\nNaši izkušeni animatorji poskrbijo za vse – program, prigrizke in nepozabne spomine. Vi se prepustite veselju!\n\n✨ Tematski rojstni dnevi v svetu znanosti\n🎈 Prilagojeni programi za različne starosti\n🔬 Zabava, ustvarjalnost in nova odkritja\n\nZa rezervacije in informacije:\n📧 infotehnopark@celje.si\n📞 +386 (03) 828 20 93\n🌐 tehnopark.si/rojstni-dnevi',
+    chips:['Najem prostora','Cene vstopnic','Delavnice']
+  },
+  'najem prostora': {
+    text:'🏢 Platforma 360 – 1.200 m² z razgledom\n\nModerni prostori z 360° razgledom na Celje, naravni les in surovi beton.\n\n📋 Na voljo:\n• Sejna soba – 30 sedežev, 75" LCD, WiFi\n• Odprt poslovni prostor – LCD, 6 govorilnic\n• Kulinarična učilnica – 9-12 udeležencev\n\n🎬 Primerno za: konference, predavanja, snemanje, fotografiranje, poslovne dogodke\n\n➕ Dogodek Plus: ogled parka 9 €/osebo\n\n📧 infotehnopark@celje.si\n📞 +386 (03) 828 20 93',
+    chips:['Rojstni dnevi','Delavnice','Kontakt']
+  },
+  'šolski program': {
+    text:'🏫 Šolski programi Tehnopark Celje\n\nProgrami usklajeni z učnim načrtom, prilagojeni starosti:\n\n🔵 Osnovne šole – naravoslovni poskusi, tehnološki izzivi\n🟣 Srednje šole – poglobljeni programi, teorija + praksa\n🟡 Vrtci – Znanstvenica Ana in gosenca Fani\n👩‍🏫 Mentorji/učitelji – izobraževanja in gradiva\n\n⏱️ Ponujamo celodnevne programe ali 2-3 urne obiske\n🌟 Posebni programi za nadarjene učence\n\nRezerv.: tehnopark@celje.si\n📞 +386 (03) 828 20 93',
+    chips:['Delavnice','Kako do nas','Kontakt']
+  },
+  'delavnice': {
+    text:'Naše delavnice:\n\n🔬 Naravoslovno-tehnične delavnice\n🍳 Kulinarika (Cele kuha)\n🎨 Ustvarjalne delavnice za otroke\n🚀 Astronomija in fizika\n🤖 Festival robotike in UI 2027\n\nDelavnice v sklopu ogleda so brezplačne!\n\nAktualni program: tehnopark.si/delavnice\n📧 infotehnopark@celje.si',
+    chips:['Cene vstopnic','Šolski program','Rojstni dnevi']
+  },
+  'kako do nas': {
+    text:'Najdete nas na:\n\n📍 Gubčeva ulica 1, 3000 Celje\n\n🚗 Parking:\n• Parkirna hiša Celeia Park (pon–sob 5:00–22:00)\n• Parkirišče Vrunčeva ulica\n• Parkirišče Železniška postaja\n\n🚌 Bus: postaja Cankarjeva ulica\n🚆 Vlak: postaja Celje (10 min hoje)\n📞 +386 (03) 828 20 93',
+    chips:['Odpiralni čas','Cene vstopnic','Kontakt']
+  },
+  'kontakt': {
+    text:'Kontaktni podatki:\n\n📞 +386 (03) 828 20 93\n📧 infotehnopark@celje.si\n📧 Rezervacije: tehnopark@celje.si\n🌐 tehnopark.si\n📍 Gubčeva ulica 1, 3000 Celje\n\n💬 Facebook & Instagram: @tehnoparkcelje',
+    chips:['Odpiralni čas','Kako do nas','Cene vstopnic']
+  },
+  'festival': {
+    text:'🤖 Festival robotike in UI 2027\n\nNamenjen vsem – družinam, šolskim skupinam, strokovnjakom in radovednim posameznikom!\n\n✅ Interaktivna razstava\n✅ Delavnice\n✅ Demonstracije\n✅ Predavanja\n\nVeč info: tehnopark.si\n📧 infotehnopark@celje.si',
+    chips:['Delavnice','Šolski program','Cene vstopnic']
+  }
 };
 
 function getR(msg){
-  const m=msg.toLowerCase();
-  if(m.includes('čas')||m.includes('odpr')||m.includes('kdaj')||m.includes('urnik'))return R['odpiralni čas'];
-  if(m.includes('cen')||m.includes('vstopnic')||m.includes('koliko')||m.includes('€'))return R['cene vstopnic'];
-  if(m.includes('kako do')||m.includes('naslov')||m.includes('kje')||m.includes('parking')||m.includes('priti'))return R['kako do nas'];
-  if(m.includes('delavnic')||m.includes('program')||m.includes('aktivnost'))return R['delavnice'];
-  if(m.includes('skupin')||m.includes('šol')||m.includes('razred'))return R['skupine in šole'];
-  if(m.includes('rojstn')||m.includes('zabav')||m.includes('proslav'))return R['rojstni dnevi'];
-  if(m.includes('kontakt')||m.includes('telefon')||m.includes('email'))return R['kontakt'];
-  return{text:'Hvala za vprašanje! Za podrobnosti:\n\n📞 +386 (03) 828 20 93\n📧 infotehnopark@celje.si\n🌐 tehnopark.si\n\nZ veseljem vam pomagamo! 😊',chips:['Odpiralni čas','Cene vstopnic','Kontakt']};
+  const m = msg.toLowerCase().trim();
+
+  // Pozdrav
+  if(/^(živjo|zdravo|hej|hi|hello|dober dan|dober večer|dobro jutro|pozdravljeni|pozdrav|oj|bok|servus|hey)/.test(m))
+    return { text: rand(['Pozdravljeni! 😊 Kako vam lahko pomagam danes?','Dober dan! Sem asistent Tehnoparka Celje. Kaj vas zanima?','Zdravo! 👋 Z veseljem vam pomagam. Kaj bi radi izvedeli?']), chips:['Odpiralni čas','Cene vstopnic','Rojstni dnevi'] };
+
+  // Hvala
+  if(m.includes('hvala')||m.includes('thx')||m.includes('thanks'))
+    return { text: rand(['Ni za kaj! 😊 Če imate še kakšno vprašanje, sem tukaj.','Z veseljem! Še kaj drugega?','Vedno radi pomagamo! Se vidimo v Tehnoparku! 🔭']), chips:['Odpiralni čas','Cene vstopnic'] };
+
+  // Kdo si
+  if(m.includes('kdo si')||m.includes('kaj si')||m.includes('si robot')||m.includes('si človek')||m.includes('si bot')||m.includes('si ai'))
+    return { text: rand(['Sem digitalni asistent Tehnoparka Celje! 🔭 Pomagam vam z informacijami o obisku, cenah, delavnicah in vsem ostalim. Kaj vas zanima?','Sem vaš virtualni vodič po Tehnoparku Celje — tukaj sem 24/7! 😊']), chips:['Odpiralni čas','Cene vstopnic','Delavnice'] };
+
+  // Nasvidenje
+  if(m.includes('nasvidenje')||m.includes('adijo')||m.includes('bye')||m.includes('čau')||m.includes('ciao'))
+    return { text:'Nasvidenje! 👋 Se vidimo v Tehnoparku Celje! 🔭', chips:[] };
+
+  // Kako si
+  if(m.includes('kako si')||m.includes('kaj dela')||m.includes('kaj novega'))
+    return { text:'Odlično, hvala! 😊 Vedno pripravljen pomagati. Kaj vas zanima o Tehnoparku?', chips:['Odpiralni čas','Cene vstopnic','Delavnice'] };
+
+  // Super / odlično
+  if(m.includes('odlično')||m.includes('super')||m.includes('wow')||m.includes('krasno')||m.includes('bravo'))
+    return { text: rand(['Super! 🎉 Veselimo se vašega obiska!','Odlično! Se vidimo v Tehnoparku! 🚀']), chips:['Odpiralni čas','Cene vstopnic'] };
+
+  // Otroci / primerno za
+  if(m.includes('otroc')||m.includes('otrok')||m.includes('mali')||m.includes('mlajš')||m.includes('primerno'))
+    return { text:'Tehnopark je primeren za vse starosti! 👨‍👩‍👧‍👦\n\nPosebej priporočamo od 4. leta naprej. Vsebine so interaktivne in zabavne za celotno družino.\n\n👶 Otroška vstopnica: 8 €\n👨‍👩‍👧‍👦 Družinska vstopnica: 28 €\n🎂 Možnost rojstnih dni', chips:['Cene vstopnic','Rojstni dnevi','Šolski program'] };
+
+  // Rezervacija
+  if(m.includes('rezerv')||m.includes('naroč')||m.includes('prijavit'))
+    return { text:'Za rezervacije:\n\n🎂 Rojstni dnevi: infotehnopark@celje.si\n🏫 Šolske skupine: tehnopark@celje.si\n🏢 Najem prostora: infotehnopark@celje.si\n\n📞 +386 (03) 828 20 93\n\nZa individualne obiske rezervacija ni potrebna!', chips:['Rojstni dnevi','Šolski program','Najem prostora'] };
+
+  // Konferenca / sejna soba / poslovni
+  if(m.includes('konferen')||m.includes('sejna')||m.includes('poslovn')||m.includes('najem')||m.includes('prostor')||m.includes('snemanje')||m.includes('cowork'))
+    return R['najem prostora'];
+
+  // Festival / robotika / UI / umetna
+  if(m.includes('festival')||m.includes('robotik')||m.includes('umetna inteligenca')||m.includes(' ui ')||m.includes('robot'))
+    return R['festival'];
+
+  // Šolski / vrtec / osnovna / srednja
+  if(m.includes('šol')||m.includes('vrtec')||m.includes('razred')||m.includes('učenec')||m.includes('dijak')||m.includes('excurz')||m.includes('izlet')||m.includes('osnovna')||m.includes('srednja')||m.includes('mentor'))
+    return R['šolski program'];
+
+  // Informacijske teme
+  if(m.includes('čas')||m.includes('odpr')||m.includes('kdaj')||m.includes('urnik')||m.includes('zapr'))return R['odpiralni čas'];
+  if(m.includes('cen')||m.includes('vstopnic')||m.includes('koliko')||m.includes('€')||m.includes('plač'))return R['cene vstopnic'];
+  if(m.includes('rojstn')||m.includes('birthday')||m.includes('proslav'))return R['rojstni dnevi'];
+  if(m.includes('delavnic')||m.includes('program')||m.includes('aktivnost')||m.includes('kuhar'))return R['delavnice'];
+  if(m.includes('kako do')||m.includes('naslov')||m.includes('kje')||m.includes('lokacij')||m.includes('parking')||m.includes('priti'))return R['kako do nas'];
+  if(m.includes('kontakt')||m.includes('telefon')||m.includes('email')||m.includes('pišite')||m.includes('poklič'))return R['kontakt'];
+
+  return { text:'Hvala za vprašanje! Za podrobnejše informacije nas kontaktirajte:\n\n📞 +386 (03) 828 20 93\n📧 infotehnopark@celje.si\n🌐 tehnopark.si\n\nZ veseljem vam pomagamo! 😊', chips:['Odpiralni čas','Cene vstopnic','Kontakt'] };
 }
 
 function addMsg(text,type){
   const b=document.getElementById('chatBody');
-  const el=document.createElement('div');
-  el.className='msg '+type;
+  const el=document.createElement('div');el.className='msg '+type;
   el.innerHTML=text.replace(/\n/g,'<br>');
-  b.appendChild(el);
-  b.scrollTop=b.scrollHeight;
+  b.appendChild(el);b.scrollTop=b.scrollHeight;
 }
 
 function addChips(list){
+  if(!list||list.length===0)return;
   const b=document.getElementById('chatBody');
-  const w=document.createElement('div');
-  w.className='chips';
+  const w=document.createElement('div');w.className='chips';
   list.forEach(label=>{
-    const btn=document.createElement('button');
-    btn.className='chip';btn.textContent=label;
-    btn.onclick=()=>userSay(label);
-    w.appendChild(btn);
+    const btn=document.createElement('button');btn.className='chip';btn.textContent=label;
+    btn.onclick=()=>userSay(label);w.appendChild(btn);
   });
-  b.appendChild(w);
-  b.scrollTop=b.scrollHeight;
+  b.appendChild(w);b.scrollTop=b.scrollHeight;
 }
 
 function userSay(text){
-  const mc=document.getElementById('mainChips');
-  if(mc)mc.remove();
+  const mc=document.getElementById('mainChips');if(mc)mc.remove();
   addMsg(text,'user');
   const b=document.getElementById('chatBody');
-  const t=document.createElement('div');
-  t.className='typing';t.id='ti';
+  const t=document.createElement('div');t.className='typing';t.id='ti';
   t.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
   b.appendChild(t);b.scrollTop=b.scrollHeight;
   setTimeout(()=>{
     const ti=document.getElementById('ti');if(ti)ti.remove();
-    const r=getR(text);
-    addMsg(r.text,'bot');
-    if(r.chips)addChips(r.chips);
+    const r=getR(text);addMsg(r.text,'bot');if(r.chips)addChips(r.chips);
   },700+Math.random()*500);
 }
 
 function sendMsg(){
   const inp=document.getElementById('chatInput');
-  const v=inp.value.trim();if(!v)return;
-  inp.value='';userSay(v);
+  const v=inp.value.trim();if(!v)return;inp.value='';userSay(v);
 }
 </script>
 </body>
