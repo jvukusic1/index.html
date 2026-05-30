@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tehnopark Celje</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:#1a3a8f;--accent:#f5a623;--radius:18px}
+body{font-family:'Outfit',sans-serif;background:#050d1f;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px 48px;position:relative;overflow-x:hidden}
+.stars-bg{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0}
+.star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d,3s) infinite var(--delay,0s)}
+@keyframes twinkle{0%,100%{opacity:var(--mn,.15)}50%{opacity:var(--mx,.9)}}
+.planet{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+.p1{width:180px;height:180px;background:radial-gradient(circle at 35% 35%,#3a6fd8,#0a1a5c);top:-60px;right:-40px;opacity:.45;box-shadow:0 0 60px rgba(58,111,216,.25)}
+.p2{width:110px;height:110px;background:radial-gradient(circle at 40% 30%,#e8734a,#7a2a0a);bottom:80px;left:-25px;opacity:.35}
+.p3{width:55px;height:55px;background:radial-gradient(circle at 35% 35%,#a0c4ff,#2a4a8f);top:32%;right:7%;opacity:.3}
+.nebula{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(60px)}
+.nb1{width:300px;height:300px;background:rgba(58,111,216,.1);top:8%;right:3%}
+.nb2{width:250px;height:250px;background:rgba(245,166,35,.07);bottom:12%;left:4%}
+.orbit{position:fixed;border-radius:50%;border:1px solid rgba(255,255,255,.05);pointer-events:none;z-index:0;top:50%;left:50%;transform:translate(-50%,-50%)}
+.content{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center}
+.demo-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.3);padding:5px 14px;border-radius:20px;margin-bottom:14px}
+.page-sub{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:22px;text-align:center;letter-spacing:.03em}
+.chat-container{width:100%;max-width:430px;border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 80px rgba(0,0,10,.6),0 0 0 1px rgba(255,255,255,.04)}
+.chat-header{background:linear-gradient(135deg,#0f2660 0%,#1a3a8f 50%,#2952cc 100%);padding:18px 20px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(255,255,255,.1);position:relative;overflow:hidden}
+.header-glow{position:absolute;width:150px;height:150px;background:rgba(245,166,35,.07);border-radius:50%;right:-30px;top:-60px;pointer-events:none}
+.logo-wrap{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;position:relative;z-index:1}
+.header-info{flex:1;position:relative;z-index:1}
+.header-name{font-size:15px;font-weight:600;color:white;line-height:1.2}
+.header-tagline{font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;font-style:italic}
+.online-pill{display:flex;align-items:center;gap:5px;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.3);padding:4px 10px;border-radius:20px;font-size:11px;color:#4ade80;font-weight:500;position:relative;z-index:1;white-space:nowrap}
+.online-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.chat-body{flex:1;min-height:340px;max-height:400px;overflow-y:auto;padding:16px 14px 12px;display:flex;flex-direction:column;gap:10px;background:#080f22;scroll-behavior:smooth}
+.chat-body::-webkit-scrollbar{width:3px}
+.chat-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.msg{max-width:85%;font-size:14px;line-height:1.6;padding:10px 14px;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.bot{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);border-radius:4px 14px 14px 14px;border:1px solid rgba(255,255,255,.1);align-self:flex-start}
+.msg.bot strong{color:white}
+.msg.user{background:linear-gradient(135deg,#1a3a8f,#2952cc);color:white;border-radius:14px 4px 14px 14px;align-self:flex-end;border:1px solid rgba(255,255,255,.1)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;align-self:flex-start;max-width:100%}
+.chip{background:rgba(255,255,255,.05);border:1px solid rgba(245,166,35,.4);color:rgba(245,166,35,.9);border-radius:20px;padding:6px 13px;font-size:12px;font-family:'Outfit',sans-serif;font-weight:500;cursor:pointer;transition:all .15s}
+.chip:hover{background:rgba(245,166,35,.15);border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.typing{display:flex;gap:5px;align-items:center;padding:12px 16px;background:rgba(255,255,255,.07);border-radius:4px 14px 14px 14px;border:1px solid rgba(255,255,255,.1);align-self:flex-start;animation:fadeUp .2s ease}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(245,166,35,.6);animation:bounce 1.2s infinite}
+.dot:nth-child(2){animation-delay:.2s}
+.dot:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.chat-footer{padding:12px 14px;background:#0a1228;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:8px;align-items:center}
+.chat-input{flex:1;border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:9px 16px;font-size:14px;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.06);color:white;outline:none;transition:border-color .2s}
+.chat-input:focus{border-color:rgba(245,166,35,.5)}
+.chat-input::placeholder{color:rgba(255,255,255,.3)}
+.send-btn{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f5a623,#e08c0a);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .1s,opacity .15s;flex-shrink:0}
+.send-btn:hover{opacity:.9;transform:scale(1.05)}
+.send-btn:active{transform:scale(.96)}
+.send-btn svg{width:16px;height:16px;fill:white}
+.branding{margin-top:18px;font-size:12px;color:rgba(255,255,255,.3);text-align:center}
+.branding a{color:rgba(245,166,35,.7);text-decoration:none;font-weight:500}
+.branding a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="stars-bg" id="stars"></div>
+<div class="nebula nb1"></div>
+<div class="nebula nb2"></div>
+<div class="planet p1"></div>
+<div class="planet p2"></div>
+<div class="planet p3"></div>
+<div class="orbit" style="width:500px;height:500px"></div>
+<div class="orbit" style="width:800px;height:800px"></div>
+
+<div class="content">
+  <div class="demo-label">🤖 Demo — AI Chatbot</div>
+  <p class="page-sub">Tehnopark Celje &middot; Z igro do zvezd!</p>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="header-glow"></div>
+      <div class="logo-wrap">🔭</div>
+      <div class="header-info">
+        <div class="header-name">Tehnopark Celje</div>
+        <div class="header-tagline">Največji znanstveno-zabavni park v SLO</div>
+      </div>
+      <div class="online-pill">
+        <div class="online-dot"></div>
+        Online
+      </div>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+      <div class="msg bot">Pozdravljeni! 👋 Sem digitalni asistent <strong>Tehnoparka Celje</strong>. Kako vam lahko pomagam?</div>
+      <div class="chips" id="mainChips">
+        <button class="chip" onclick="userSay('Odpiralni čas')">🕐 Odpiralni čas</button>
+        <button class="chip" onclick="userSay('Cene vstopnic')">🎟️ Cene vstopnic</button>
+        <button class="chip" onclick="userSay('Kako do nas')">📍 Kako do nas</button>
+        <button class="chip" onclick="userSay('Delavnice')">🔬 Delavnice</button>
+        <button class="chip" onclick="userSay('Skupine in šole')">🏫 Skupine in šole</button>
+        <button class="chip" onclick="userSay('Rojstni dnevi')">🎂 Rojstni dnevi</button>
+      </div>
+    </div>
+
+    <div class="chat-footer">
+      <input class="chat-input" id="chatInput" placeholder="Napišite vprašanje..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+      <button class="send-btn" onclick="sendMsg()" aria-label="Pošlji">
+        <svg viewBox="0 0 24 24"><path d="M2 12L22 2L14 22L11 13L2 12Z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="branding">Demo chatbot &middot; Izdelal <a href="#">jvukusic</a> &middot; AI avtomatizacija za podjetja</div>
+</div>
+
+<script>
+const sb = document.getElementById('stars');
+for(let i=0;i<120;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const sz=Math.random()*2.5+0.5;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;--mn:${0.1+Math.random()*0.15};--mx:${0.6+Math.random()*0.4}`;
+  sb.appendChild(s);
+}
+
+const R={
+  'odpiralni čas':{text:'Naš odpiralni čas:\n\n🟢 Sreda – Nedelja: 10:00 – 17:00\n🔴 Ponedeljek in Torek: zaprto\n\n📌 Zadnji vstop je ob 16:00.\n\n🏫 Za šolske skupine: Tor – Ned, 9:00 – 17:00',chips:['Cene vstopnic','Kako do nas','Skupine in šole']},
+  'cene vstopnic':{text:'Cene vstopnic:\n\n👤 Odrasli: 11 €\n👶 Otroci / dijaki / študenti: 8 €\n👨‍👩‍👧‍👦 Družinska: 28 €\n(2 odrasla + do 4 otroci do 15 let)\n\n✅ Vključene brezplačne delavnice.\n🎟️ shop.tehnopark.si',chips:['Odpiralni čas','Skupine in šole','Rojstni dnevi']},
+  'kako do nas':{text:'Najdete nas na:\n\n📍 Gubčeva ulica 1, 3000 Celje\n\n🚗 Parking:\n• Parkirna hiša Celeia Park\n• Parkirišče Vrunčeva ulica\n• Parkirišče Železniška postaja\n\n🚆 Vlak: postaja Celje (10 min hoje)\n📞 +386 (03) 828 20 93',chips:['Odpiralni čas','Cene vstopnic','Kontakt']},
+  'delavnice':{text:'Naše delavnice:\n\n🔬 Naravoslovno-tehnične delavnice\n🍳 Kulinarika (Cele kuha)\n🎨 Ustvarjalne delavnice za otroke\n🚀 Astronomija in fizika\n\nV sklopu ogleda brezplačno!\n\n📧 infotehnopark@celje.si\n🌐 tehnopark.si/delavnice',chips:['Cene vstopnic','Skupine in šole','Rojstni dnevi']},
+  'skupine in šole':{text:'Za organizirane skupine (15+ oseb):\n\n🏫 Šolske skupine:\n• Rezervacija: tor–pet, 8:00–10:00 in 13:00–14:00\n• Email: tehnopark@celje.si\n\n👥 Večje skupine:\n• infotehnopark@celje.si\n\n⚠️ Rezervacija je obvezna!',chips:['Odpiralni čas','Delavnice','Kontakt']},
+  'rojstni dnevi':{text:'🎂 Praznujte rojstni dan v Tehnoparku!\n\n• Otroški rojstnodnevni paketi\n• Skupinski obisk z delavnico\n• Prilagojeni programi\n\n📧 infotehnopark@celje.si\n📞 +386 (03) 828 20 93\n🌐 tehnopark.si/rojstni-dnevi',chips:['Cene vstopnic','Delavnice','Kontakt']},
+  'kontakt':{text:'Kontaktni podatki:\n\n📞 +386 (03) 828 20 93\n📧 infotehnopark@celje.si\n📧 Rezervacije: tehnopark@celje.si\n🌐 tehnopark.si\n📍 Gubčeva ulica 1, 3000 Celje\n\n💬 @tehnoparkcelje',chips:['Odpiralni čas','Kako do nas','Cene vstopnic']}
+};
+
+function getR(msg){
+  const m=msg.toLowerCase();
+  if(m.includes('čas')||m.includes('odpr')||m.includes('kdaj')||m.includes('urnik'))return R['odpiralni čas'];
+  if(m.includes('cen')||m.includes('vstopnic')||m.includes('koliko')||m.includes('€'))return R['cene vstopnic'];
+  if(m.includes('kako do')||m.includes('naslov')||m.includes('kje')||m.includes('parking')||m.includes('priti'))return R['kako do nas'];
+  if(m.includes('delavnic')||m.includes('program')||m.includes('aktivnost'))return R['delavnice'];
+  if(m.includes('skupin')||m.includes('šol')||m.includes('razred'))return R['skupine in šole'];
+  if(m.includes('rojstn')||m.includes('zabav')||m.includes('proslav'))return R['rojstni dnevi'];
+  if(m.includes('kontakt')||m.includes('telefon')||m.includes('email'))return R['kontakt'];
+  return{text:'Hvala za vprašanje! Za podrobnosti:\n\n📞 +386 (03) 828 20 93\n📧 infotehnopark@celje.si\n🌐 tehnopark.si\n\nZ veseljem vam pomagamo! 😊',chips:['Odpiralni čas','Cene vstopnic','Kontakt']};
+}
+
+function addMsg(text,type){
+  const b=document.getElementById('chatBody');
+  const el=document.createElement('div');
+  el.className='msg '+type;
+  el.innerHTML=text.replace(/\n/g,'<br>');
+  b.appendChild(el);
+  b.scrollTop=b.scrollHeight;
+}
+
+function addChips(list){
+  const b=document.getElementById('chatBody');
+  const w=document.createElement('div');
+  w.className='chips';
+  list.forEach(label=>{
+    const btn=document.createElement('button');
+    btn.className='chip';btn.textContent=label;
+    btn.onclick=()=>userSay(label);
+    w.appendChild(btn);
+  });
+  b.appendChild(w);
+  b.scrollTop=b.scrollHeight;
+}
+
+function userSay(text){
+  const mc=document.getElementById('mainChips');
+  if(mc)mc.remove();
+  addMsg(text,'user');
+  const b=document.getElementById('chatBody');
+  const t=document.createElement('div');
+  t.className='typing';t.id='ti';
+  t.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  b.appendChild(t);b.scrollTop=b.scrollHeight;
+  setTimeout(()=>{
+    const ti=document.getElementById('ti');if(ti)ti.remove();
+    const r=getR(text);
+    addMsg(r.text,'bot');
+    if(r.chips)addChips(r.chips);
+  },700+Math.random()*500);
+}
+
+function sendMsg(){
+  const inp=document.getElementById('chatInput');
+  const v=inp.value.trim();if(!v)return;
+  inp.value='';userSay(v);
+}
+</script>
+</body>
+</html>
